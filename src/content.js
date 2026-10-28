@@ -2,10 +2,19 @@
 
 export const DOWNLOAD_URL = 'https://github.com/quiort/tradAII-release/releases/latest';
 
+// Windows installer. The site asks GitHub for the newest release on click;
+// these pinned values are the fallback if that lookup fails.
+export const DOWNLOAD = {
+  releaseApi: 'https://api.github.com/repos/quiort/tradAII-release/releases/latest',
+  fallbackUrl: 'https://github.com/quiort/tradAII-release/releases/download/v1.19.16/TradAI-Setup-1.19.16.exe',
+  fallbackVersion: 'v1.19.16',
+  fallbackSizeMb: 94,
+};
+
 export const HERO = {
   eyebrow: 'For crypto signal buyers',
   lead: "TradAI reads Telegram signal channels, paper-trades every call automatically, and shows you the real P&L. Keep the channels that work. Drop the ones that don't.",
-  fine: 'Windows app · Free plan · No card needed',
+  fine: 'Windows now · Mac, Linux & Android soon · Free plan',
 };
 
 // Real signal from a public Telegram channel (one of the app's default feeds),

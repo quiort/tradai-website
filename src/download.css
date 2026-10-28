@@ -1,0 +1,27 @@
+/* Download picker */
+.dl-backdrop{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:rgba(4,6,9,.78);backdrop-filter:blur(6px);animation:dl-fade .18s ease-out}
+.dl-dialog{position:relative;width:min(460px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:26px 22px 22px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 30px 90px rgba(0,0,0,.6);animation:dl-rise .22s cubic-bezier(.2,.8,.2,1)}
+.dl-dialog h2{font:800 24px/1.2 var(--display);letter-spacing:-.6px;margin:0 0 4px}
+.dl-lead{margin:0 0 18px;color:var(--sub);font-size:14px}
+.dl-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--sub);font-size:14px;cursor:pointer}
+.dl-close:hover{color:var(--text);border-color:#4b5360}
+.dl-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dl-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);opacity:.72}
+.dl-item.is-available{opacity:1;border-color:rgba(151,125,245,.45);background:linear-gradient(120deg,rgba(151,125,245,.12),rgba(151,125,245,.03))}
+.dl-item.is-yours:not(.is-available){opacity:.9}
+.dl-icon{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:10px;background:var(--bg);color:var(--sub)}
+.dl-item.is-available .dl-icon{color:var(--purple)}
+.dl-icon svg{width:20px;height:20px;fill:currentColor}
+.dl-text{flex:1;min-width:0}
+.dl-text strong{display:block;font-size:15px}
+.dl-text em{font-style:normal;font-weight:500;color:var(--purple);font-size:12px}
+.dl-text small{display:block;margin-top:2px;color:var(--muted);font-size:12px}
+.dl-soon{padding:5px 9px;border:1px solid var(--line);border-radius:99px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
+.dl-item .btn{flex:0 0 auto;cursor:pointer;border:0;font-family:inherit}
+.dl-item .btn:disabled{opacity:.7;cursor:progress}
+.dl-status{margin:14px 2px 0;font-size:13px;line-height:1.5;color:var(--text)}
+.dl-status a{color:var(--purple);text-decoration:underline}
+.dl-status.muted{color:var(--muted)}
+@keyframes dl-fade{from{opacity:0}}
+@keyframes dl-rise{from{opacity:0;transform:translateY(10px) scale(.98)}}
+@media(prefers-reduced-motion:reduce){.dl-backdrop,.dl-dialog{animation:none}}

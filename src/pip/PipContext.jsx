@@ -137,13 +137,21 @@ export function usePipLine(line) {
   return ref;
 }
 
-/** A download/upgrade link that makes Pip excited on hover or focus. */
+export const OPEN_DOWNLOAD_EVENT = 'tradai:open-download';
+
+/**
+ * A download/upgrade link that makes Pip excited on hover or focus.
+ * Download links open the platform picker instead of leaving the page;
+ * the href stays as a no-JS fallback.
+ */
 export function CtaLink({ href = DOWNLOAD_URL, className = 'btn btn-primary', children }) {
   const { react, rest } = usePip();
+  const opensPicker = href === DOWNLOAD_URL;
   return (
     <a
       className={className}
       href={href}
+      onClick={opensPicker ? (e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent(OPEN_DOWNLOAD_EVENT)); } : undefined}
       onPointerEnter={() => react('excited')}
       onPointerLeave={rest}
       onFocus={() => react('excited', 1500)}

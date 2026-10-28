@@ -1,6 +1,7 @@
 import { PipProvider, CtaLink, usePipLine } from './pip/PipContext.jsx';
 import Pip from './pip/Pip.jsx';
 import SignalDemo from './SignalDemo.jsx';
+import DownloadModal from './DownloadModal.jsx';
 import { FEATURES, HERO, PIP_LINES, PLANS, STEPS } from './content.js';
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
       </main>
       <Footer />
       <Pip />
+      <DownloadModal />
     </PipProvider>
   );
 }
@@ -50,7 +52,7 @@ function Hero() {
           <h1>Test any signal channel <em>before</em> you trust it with money.</h1>
           <p className="lead">{HERO.lead}</p>
           <div className="cta-row">
-            <CtaLink>Download free for Windows</CtaLink>
+            <CtaLink>Download free</CtaLink>
             <a className="btn btn-ghost" href="#how">See how it works</a>
           </div>
           <p className="fine">{HERO.fine}</p>
@@ -121,7 +123,7 @@ function FinalCta() {
       <div className="wrap">
         <h2>Stop guessing which channel works.</h2>
         <p className="lead">Let the results speak before your money does.</p>
-        <div className="cta-row"><CtaLink>Download free for Windows</CtaLink></div>
+        <div className="cta-row"><CtaLink>Download free</CtaLink></div>
       </div>
     </Block>
   );

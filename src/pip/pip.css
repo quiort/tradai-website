@@ -1,0 +1,42 @@
+/* Pip the pet */
+.pip-dock{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}
+.pip-bubble{pointer-events:auto;max-width:240px;margin:0 6px 8px 0;padding:11px 14px;border-radius:14px 14px 4px 14px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-size:14px;line-height:1.45;box-shadow:0 12px 30px -12px #000;opacity:0;transform:translateY(6px) scale(.97);transform-origin:bottom right;transition:opacity .2s,transform .2s}
+.pip-bubble.show{opacity:1;transform:none}
+.pip-row{display:flex;align-items:flex-end;gap:4px;pointer-events:auto}
+.pip-close{width:24px;height:24px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--muted);font-size:13px;line-height:1;cursor:pointer;opacity:0;transition:opacity .2s}
+.pip-dock:hover .pip-close,.pip-close:focus-visible{opacity:1}
+.pip{width:84px;height:84px;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
+.pip svg{width:100%;height:100%;overflow:visible;display:block}
+.pip-body{transform-origin:60px 100px;animation:pip-bob 3.2s ease-in-out infinite}
+.pip-pupils{transition:transform .08s linear}
+.pip-lids{transform-origin:60px 62px;transform:scaleY(0)}
+.pip.blink .pip-lids{transform:scaleY(1)}
+.pip-happy-eyes,.pip-sleep-eyes,.pip-worry-brows,.pip-mouth-o,.pip-zzz{opacity:0}
+.pip-candle{fill:var(--green);transition:fill .4s}
+.pip[data-trend="down"] .pip-candle{fill:var(--red)}
+/* moods */
+.pip[data-mood="happy"] .pip-eyes{opacity:0}
+.pip[data-mood="happy"] .pip-happy-eyes{opacity:1}
+.pip[data-mood="happy"] .pip-body{animation:pip-hop .55s ease-in-out 2}
+.pip[data-mood="excited"] .pip-body{animation:pip-hop .4s ease-in-out infinite}
+.pip[data-mood="excited"] .pip-mouth{opacity:0}
+.pip[data-mood="excited"] .pip-mouth-o{opacity:1}
+.pip[data-mood="worried"] .pip-worry-brows{opacity:1}
+.pip[data-mood="worried"] .pip-body{animation:pip-shiver .5s ease-in-out 2}
+.pip[data-mood="sleep"] .pip-eyes{opacity:0}
+.pip[data-mood="sleep"] .pip-sleep-eyes,.pip[data-mood="sleep"] .pip-zzz{opacity:1}
+.pip[data-mood="sleep"] .pip-body{animation:pip-breathe 4s ease-in-out infinite}
+.pip[data-mood="sleep"] .pip-zzz{animation:pip-z 2.4s ease-in-out infinite}
+.pip[data-mood="spin"] .pip-body{animation:pip-spin .7s cubic-bezier(.5,0,.3,1)}
+.pip-recall{display:inline-block;pointer-events:auto;padding:6px 10px;border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--sub);font-size:12px;cursor:pointer}
+@keyframes pip-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes pip-hop{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(0) scale(1.08,.9)}60%{transform:translateY(-14px) scale(.95,1.06)}}
+@keyframes pip-shiver{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+@keyframes pip-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03,.97)}}
+@keyframes pip-z{0%{opacity:0;transform:translate(0,0)}30%{opacity:1}100%{opacity:0;transform:translate(8px,-14px)}}
+@keyframes pip-spin{to{transform:rotate(360deg)}}
+@media(max-width:480px){.pip{width:68px;height:68px}.pip-bubble{max-width:200px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .pip *,.pip-bubble{animation:none!important;transition:none!important}
+}

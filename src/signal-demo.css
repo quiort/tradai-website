@@ -1,0 +1,69 @@
+/* Signal card copied from the desktop app (src/styles.css in tradAI), scoped to
+   .app-frame so it can't clash with site styles. Values match the app's final
+   overrides; layout adapted only where the app assumes a 1024px+ window. */
+.app-frame{margin-top:44px;border:1px solid var(--line);border-radius:16px;background:var(--bg);overflow:hidden;box-shadow:0 30px 80px -40px rgba(0,0,0,.8),0 0 0 1px rgba(151,125,245,.06)}
+.app-bar{display:flex;align-items:center;gap:12px;height:36px;padding:0 14px;border-bottom:1px solid var(--line);background:#0e1116;color:var(--muted);font-size:12px;font-weight:500}
+.app-dots{display:flex;gap:6px}.app-dots i{width:9px;height:9px;border-radius:50%;background:#2a303a}
+.app-frame .panel{margin:12px;border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:0 8px 26px rgba(0,0,0,.1)}
+.app-frame .panel-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 19px 14px}
+.app-frame .panel-heading h2{font:700 16px var(--display);letter-spacing:-.1px;margin:0}
+.app-frame .panel-heading p{color:var(--muted);font-size:12px;margin:4px 0 0}
+.app-frame .live-indicator{display:flex;align-items:center;gap:7px;padding:5px 7px;border:1px solid #2e343d;border-radius:6px;background:#13181e;color:#a0a9b5;font-size:10px;font-weight:700;letter-spacing:.6px;white-space:nowrap}
+.app-frame .live-indicator i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(43,212,154,.3);animation:demo-pulse 1.6s ease-in-out infinite}
+.app-frame .live-indicator i.replay{background:var(--purple);box-shadow:0 0 8px rgba(151,125,245,.35)}
+
+.app-frame .signal-item{padding:4px 19px 14px}
+.app-frame .signal-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.app-frame .signal-market{display:flex;align-items:center;gap:8px;min-width:0}
+.app-frame .signal-coin{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border-radius:50%;background:#202630;color:#adb5c1;font-size:17px}
+.app-frame .signal-chart-trigger{display:inline-flex;align-items:center;gap:6px;padding:2px 0;color:var(--text);font-size:14px;font-weight:700}
+.app-frame .signal-chart-trigger span{color:var(--purple);font-size:12px;opacity:.85}
+.app-frame .signal-market small{display:block;margin-top:3px;color:#767f8c;font-size:11px;letter-spacing:.25px}
+.app-frame .long-badge{display:flex;align-items:center;gap:5px;padding:4px 7px;border-radius:4px;background:rgba(43,212,154,.09);color:var(--green);font-size:10px;font-weight:700;white-space:nowrap}
+.app-frame .long-badge i{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.app-frame .signal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.app-frame .signal-tag{padding:5px 7px;border:1px solid var(--line);border-radius:5px;background:var(--surface-2);color:#aab2bf;font-size:10px;font-weight:700;letter-spacing:.45px}
+.app-frame .signal-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;padding:9px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.app-frame .signal-levels>div{min-width:0}
+.app-frame .signal-levels small{display:block;margin-bottom:5px;color:#707987;font-size:10px;font-weight:600;letter-spacing:.4px}
+.app-frame .signal-levels b{font-size:13px;font-weight:600;white-space:normal;font-variant-numeric:tabular-nums}
+.app-frame .level-stop{color:var(--red)!important}
+.app-frame .level-target{color:var(--green)!important}
+.app-frame .signal-targets{margin-top:10px}
+.app-frame .signal-targets-head{display:flex;align-items:center;justify-content:space-between}
+.app-frame .signal-targets-head>small{color:#828b99;font-size:10px;font-weight:700;letter-spacing:.65px}
+.app-frame .signal-targets-head>span{color:#77818e;font-size:10px}
+.app-frame .tp-chip-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:7px}
+.app-frame .signal-target-chip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2px 5px;min-width:0;padding:6px 7px;border:1px solid var(--line);border-radius:5px;background:var(--surface-2);transition:border-color .3s,background .3s}
+.app-frame .signal-target-chip small{color:#77818e;font-size:10px;font-weight:700}
+.app-frame .signal-target-chip b{order:3;flex-basis:100%;font-size:12px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.app-frame .signal-target-chip em{color:#70d7af;font-size:9px;font-style:normal;font-weight:700;white-space:nowrap}
+.app-frame .signal-target-chip.ready{border-color:rgba(43,212,154,.38);background:rgba(43,212,154,.08);animation:demo-hit .6s ease-out}
+.app-frame .signal-actions{display:flex;align-items:center;gap:8px;margin-top:10px}
+.app-frame .paper-button,.app-frame .live-action{padding:6px 9px;border-radius:5px;border:1px solid rgba(151,125,245,.3);background:rgba(151,125,245,.11);color:#c6b7ff;font-size:10px;font-weight:600}
+.app-frame .paper-button.is-done{opacity:.55}
+.app-frame .live-action{background:#171b22;border-color:#303641;color:#9fa6b1}
+
+/* Open paper position, as on the app's Signal Positions page */
+.app-frame .position-strip{margin:0 19px 18px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+.app-frame .pos-head{display:flex;align-items:center;gap:8px}
+.app-frame .type-pill,.app-frame .status-tag{display:inline-block;padding:4px 6px;border-radius:4px;background:#1a2029;color:#a3acb9;font-size:11px;font-weight:700;letter-spacing:.3px}
+.app-frame .status-tag.open{background:rgba(43,212,154,.09);color:#5cc69f}
+.app-frame .demo-spark{flex:1;height:30px;min-width:0}
+.app-frame .demo-spark svg{display:block;width:100%;height:100%;overflow:visible}
+.app-frame .pos-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px;margin-top:12px}
+.app-frame .pos-grid>div{min-width:0}
+.app-frame .pos-grid span{display:block;color:#77818e;font-size:10px;font-weight:700;letter-spacing:.6px}
+.app-frame .pos-grid b{display:block;margin-top:5px;font:700 16px var(--display);letter-spacing:-.3px;font-variant-numeric:tabular-nums;transition:color .5s}
+.app-frame .pos-grid small{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+.app-frame .positive{color:var(--green)!important}
+.app-frame .negative{color:var(--red)!important}
+.app-frame .mark.flash-up{color:var(--green);transition:none}
+.app-frame .mark.flash-down{color:var(--red);transition:none}
+.demo-note{margin:0 16px 14px;color:var(--muted);font-size:12px;line-height:1.55;max-width:none}
+
+@keyframes demo-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes demo-hit{0%{transform:scale(.96);background:rgba(43,212,154,.25)}100%{transform:none}}
+@media(min-width:560px){.app-frame .pos-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.app-frame .tp-chip-row{grid-template-columns:repeat(7,minmax(0,1fr))}.app-frame .signal-target-chip b{font-size:11px}}
+@media(max-width:400px){.app-frame .panel{margin:8px}.app-frame .panel-heading{padding:14px 14px 12px}.app-frame .signal-item{padding:4px 14px 12px}.app-frame .position-strip{margin:0 14px 14px}.app-frame .signal-levels b{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.app-frame *{animation:none!important;transition:none!important}}

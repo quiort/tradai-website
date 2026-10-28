@@ -25,3 +25,23 @@
 @keyframes dl-fade{from{opacity:0}}
 @keyframes dl-rise{from{opacity:0;transform:translateY(10px) scale(.98)}}
 @media(prefers-reduced-motion:reduce){.dl-backdrop,.dl-dialog{animation:none}}
+/* Pro checkout */
+.pro-dialog{width:min(500px,100%)}
+.pro-step{display:flex;align-items:center;gap:8px;margin:18px 0 8px;font-weight:700;font-size:14px}
+.pro-step span{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--soft);color:var(--purple);font-size:12px}
+.pro-options{display:flex;flex-wrap:wrap;gap:8px}
+.pro-option{flex:1 1 140px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--text);text-align:left;cursor:pointer;font-family:inherit}
+.pro-option strong{display:block;font-size:14px}.pro-option small{color:var(--muted);font-size:12px}
+.pro-chip{padding:7px 11px;border:1px solid var(--line);border-radius:99px;background:var(--surface-2);color:var(--sub);font:600 12px var(--font);cursor:pointer}
+.pro-option.is-on,.pro-chip.is-on{border-color:rgba(151,125,245,.6);background:rgba(151,125,245,.12);color:var(--text)}
+.pro-address{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.pro-address code{flex:1;min-width:0;overflow-wrap:anywhere;font:500 13px/1.4 ui-monospace,Consolas,monospace;color:var(--text);user-select:all}
+.pro-address .btn{flex:0 0 auto;cursor:pointer;background:none;font-family:inherit}
+.pro-note{margin:8px 2px 0;color:var(--muted);font-size:12px;line-height:1.5}
+.pro-select{user-select:all;color:var(--sub)}
+.pro-field{display:block;margin-top:10px;color:var(--sub);font-size:12px;font-weight:600}
+.pro-field input{display:block;width:100%;margin-top:5px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:14px var(--font)}
+.pro-field input:focus{outline:2px solid var(--purple);outline-offset:1px}
+.pro-send{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pro-send .btn{flex:1 1 160px;justify-content:center}
+.btn.is-disabled{opacity:.45;cursor:not-allowed}

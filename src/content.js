@@ -64,7 +64,7 @@ export const PLANS = [
     featured: true,
     items: ['Unlimited signal channels', 'Binance Live mode', 'Full P&L history', 'TradAI signal channel included'],
     cta: 'Get Pro',
-    href: DOWNLOAD_URL,
+    href: '#pro',
   },
 ];
 

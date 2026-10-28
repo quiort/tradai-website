@@ -2,6 +2,7 @@ import { PipProvider, CtaLink, usePipLine } from './pip/PipContext.jsx';
 import Pip from './pip/Pip.jsx';
 import SignalDemo from './SignalDemo.jsx';
 import DownloadModal from './DownloadModal.jsx';
+import ProCheckout from './ProCheckout.jsx';
 import { FEATURES, HERO, PIP_LINES, PLANS, STEPS } from './content.js';
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
       <Footer />
       <Pip />
       <DownloadModal />
+      <ProCheckout />
     </PipProvider>
   );
 }

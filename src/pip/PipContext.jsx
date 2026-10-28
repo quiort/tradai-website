@@ -147,11 +147,12 @@ export const OPEN_DOWNLOAD_EVENT = 'tradai:open-download';
 export function CtaLink({ href = DOWNLOAD_URL, className = 'btn btn-primary', children }) {
   const { react, rest } = usePip();
   const opensPicker = href === DOWNLOAD_URL;
+  const opensPro = href === '#pro';
   return (
     <a
       className={className}
       href={href}
-      onClick={opensPicker ? (e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent(OPEN_DOWNLOAD_EVENT)); } : undefined}
+      onClick={opensPicker || opensPro ? (e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent(opensPro ? 'tradai:open-pro' : OPEN_DOWNLOAD_EVENT)); } : undefined}
       onPointerEnter={() => react('excited')}
       onPointerLeave={rest}
       onFocus={() => react('excited', 1500)}

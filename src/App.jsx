@@ -3,7 +3,7 @@ import Pip from './pip/Pip.jsx';
 import SignalDemo from './SignalDemo.jsx';
 import DownloadModal from './DownloadModal.jsx';
 import ProCheckout from './ProCheckout.jsx';
-import { FEATURES, HERO, PIP_LINES, PLANS, STEPS } from './content.js';
+import { FEATURES, HERO, PIP_LINES, PLANS, PRO_STEPS, STEPS } from './content.js';
 
 export default function App() {
   return (
@@ -113,6 +113,16 @@ function Pricing() {
               <CtaLink href={plan.href} className={`btn ${plan.featured ? 'btn-primary' : 'btn-ghost'}`}>{plan.cta}</CtaLink>
             </div>
           ))}
+        </div>
+
+        <div className="pay-steps">
+          <h3>How to get Pro</h3>
+          <ol>
+            {PRO_STEPS.map((step) => (
+              <li key={step.title}><strong>{step.title}</strong><span>{step.text}</span></li>
+            ))}
+          </ol>
+          <p className="pay-foot">Paid on another device or have a question? Message the payment bot on Telegram with your payment ID.</p>
         </div>
       </div>
     </Block>

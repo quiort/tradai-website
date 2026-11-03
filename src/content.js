@@ -86,3 +86,12 @@ export const PIP_TIPS = [
   'Taking partial profit at TP1 makes bad days much smaller.',
   'Paper first. Live later. Always in that order.',
 ];
+
+// "How to get Pro" steps under pricing. Matches the checkout in ProCheckout.jsx.
+export const PRO_STEPS = [
+  { title: 'Download TradAI and sign in', text: 'Install the free Windows app and create your account. Remember the email you use.' },
+  { title: 'Click Get Pro and pick a plan', text: 'Here on the site or inside the app, under Settings → Plan.' },
+  { title: 'Pay with crypto on OxaPay', text: 'Open the OxaPay checkout and pay with any coin and network you like.' },
+  { title: 'Send your payment ID', text: 'Paste the payment ID and your TradAI email, then send it to our Telegram bot in one click.' },
+  { title: 'Paste your Pro key', text: 'The bot checks the payment and replies with your key. Paste it in TradAI → Settings → Plan.' },
+];

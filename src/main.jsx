@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import AdminPanel from './AdminPanel.jsx';
 import { trackVisit } from './track.js';
+import { initSectionRouting } from './sectionLinks.js';
 import './styles.css';
 import './pip/pip.css';
 import './signal-demo.css';
@@ -22,6 +23,7 @@ function Root() {
     return () => { window.removeEventListener('hashchange', onHash); window.removeEventListener('popstate', onHash); };
   }, []);
   useEffect(() => { if (!admin) trackVisit(); }, [admin]);
+  useEffect(() => { if (!admin) initSectionRouting(); }, [admin]);
   return admin ? <AdminPanel /> : <App />;
 }
 

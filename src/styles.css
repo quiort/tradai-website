@@ -148,3 +148,4 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
   .pay-steps li:not(:last-child)::after{left:34px;right:-20px;top:17px;bottom:auto;width:auto;height:1px}
   .pay-steps li strong{margin-top:0}
 }
+section[id]{scroll-margin-top:72px}

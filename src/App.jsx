@@ -1,6 +1,7 @@
 import { PipProvider, CtaLink, usePipLine } from './pip/PipContext.jsx';
 import Pip from './pip/Pip.jsx';
 import SignalDemo from './SignalDemo.jsx';
+import { goToSection } from './sectionLinks.js';
 import DownloadModal from './DownloadModal.jsx';
 import ProCheckout from './ProCheckout.jsx';
 import { FEATURES, HERO, PIP_LINES, PLANS, PRO_STEPS, STEPS } from './content.js';
@@ -34,10 +35,10 @@ function Nav() {
   return (
     <header className="nav">
       <div className="wrap">
-        <a href="#top" className="logo" aria-label="TradAI home">Trad<b>AI</b></a>
+        <a href="/" onClick={(e) => goToSection(e, '')} className="logo" aria-label="TradAI home">Trad<b>AI</b></a>
         <nav className="nav-links" aria-label="Main">
-          <a href="#how" className="hide-sm">How it works</a>
-          <a href="#pricing" className="hide-sm">Pricing</a>
+          <a href="/how" onClick={(e) => goToSection(e, 'how')} className="hide-sm">How it works</a>
+          <a href="/pricing" onClick={(e) => goToSection(e, 'pricing')} className="hide-sm">Pricing</a>
           <CtaLink className="btn btn-primary btn-sm">Download</CtaLink>
         </nav>
       </div>
@@ -55,7 +56,7 @@ function Hero() {
           <p className="lead">{HERO.lead}</p>
           <div className="cta-row">
             <CtaLink>Download free</CtaLink>
-            <a className="btn btn-ghost" href="#how">See how it works</a>
+            <a className="btn btn-ghost" href="/how" onClick={(e) => goToSection(e, 'how')}>See how it works</a>
           </div>
           <p className="fine">{HERO.fine}</p>
         </div>

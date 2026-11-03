@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SUPABASE_KEY, SUPABASE_URL } from './track.js';
 
-// Owner-only dashboard at gettradai.app/#admin. Sign-in uses a Supabase Auth user;
+// Owner-only dashboard at gettradai.app/admin. Sign-in uses a Supabase Auth user;
 // the database only returns rows to the owner email (row-level security).
 const SESSION_KEY = 'tradai-admin-session';
 const KIND_LABEL = {
@@ -86,7 +86,7 @@ export default function AdminPanel() {
   return (
     <div className="adm">
       <header className="adm-top">
-        <a href="#" className="logo">Trad<b>AI</b> <span>admin</span></a>
+        <a href="/" className="logo">Trad<b>AI</b> <span>admin</span></a>
         <div className="adm-top-r">
           <select value={days} onChange={(e) => setDays(Number(e.target.value))} aria-label="Period">
             <option value={1}>Last 24 hours</option><option value={7}>Last 7 days</option><option value={30}>Last 30 days</option><option value={90}>Last 90 days</option>
@@ -170,7 +170,7 @@ function AdminLogin({ onSignedIn }) {
   return (
     <div className="adm adm-login">
       <form onSubmit={submit}>
-        <a href="#" className="logo">Trad<b>AI</b> <span>admin</span></a>
+        <a href="/" className="logo">Trad<b>AI</b> <span>admin</span></a>
         <label htmlFor="adm-email">Email<input id="adm-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="username" required /></label>
         <label htmlFor="adm-pass">Password<input id="adm-pass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required /></label>
         {error && <p className="adm-error">{error}</p>}

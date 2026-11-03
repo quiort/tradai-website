@@ -45,3 +45,4 @@
 .pro-send{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .pro-send .btn{flex:1 1 160px;justify-content:center}
 .btn.is-disabled{opacity:.45;cursor:not-allowed}
+.pro-oxapay{display:flex;justify-content:center;margin-top:10px;background:#2bd49a;color:#08120e}.pro-oxapay:hover{background:#4ee0ae}

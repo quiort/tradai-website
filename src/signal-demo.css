@@ -1,10 +1,10 @@
 /* Signal card copied from the desktop app (src/styles.css in tradAI), scoped to
    .app-frame so it can't clash with site styles. Values match the app's final
    overrides; layout adapted only where the app assumes a 1024px+ window. */
-.app-frame{margin-top:44px;border:1px solid var(--line);border-radius:16px;background:var(--bg);overflow:hidden;box-shadow:0 30px 80px -40px rgba(0,0,0,.8),0 0 0 1px rgba(151,125,245,.06)}
+.app-frame{margin-top:44px;border:1px solid var(--line);border-radius:4px;background:var(--bg);overflow:hidden;box-shadow:0 30px 80px -40px rgba(0,0,0,.8),0 0 0 1px rgba(151,125,245,.06)}
 .app-bar{display:flex;align-items:center;gap:12px;height:36px;padding:0 14px;border-bottom:1px solid var(--line);background:#0e1116;color:var(--muted);font-size:12px;font-weight:500}
 .app-dots{display:flex;gap:6px}.app-dots i{width:9px;height:9px;border-radius:50%;background:#2a303a}
-.app-frame .panel{margin:12px;border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:0 8px 26px rgba(0,0,0,.1)}
+.app-frame .panel{margin:12px;border:1px solid var(--line);border-radius:4px;background:var(--surface);box-shadow:0 8px 26px rgba(0,0,0,.1)}
 .app-frame .panel-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 19px 14px}
 .app-frame .panel-heading h2{font:700 16px var(--display);letter-spacing:-.1px;margin:0}
 .app-frame .panel-heading p{color:var(--muted);font-size:12px;margin:4px 0 0}

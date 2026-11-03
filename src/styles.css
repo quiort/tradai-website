@@ -104,3 +104,47 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 .pay-steps li strong{font-size:15px}
 .pay-steps li span{color:var(--sub);font-size:14px}
 .pay-foot{margin:18px 0 0;color:var(--muted);font-size:13px}
+
+/* ===== Ledger style: hairline rules and square edges instead of rounded cards ===== */
+:root{--r:3px;--mono:ui-monospace,'SFMono-Regular',Consolas,'Liberation Mono',monospace}
+.btn{border-radius:3px}
+.eyebrow{border-radius:2px;font-family:var(--mono);font-weight:600;letter-spacing:.8px}
+:focus-visible{border-radius:2px}
+
+/* How it works: numbered columns under a rule, no boxes */
+.steps{gap:0;border-top:1px solid var(--line)}
+.step{border:0;border-radius:0;background:none;padding:22px 24px 6px 0;position:relative}
+.step::before{width:auto;height:auto;margin:0 0 14px;padding:0;border-radius:0;background:none;display:block;content:"0" counter(s);font:600 13px var(--mono);letter-spacing:1px;color:var(--purple)}
+.step::after{content:"";position:absolute;top:-1px;left:0;width:36px;height:2px;background:var(--purple)}
+
+/* Pricing: one ruled table, two columns, Pro marked by a top bar */
+.plans{gap:0;border:1px solid var(--line);border-radius:0}
+.plan{border:0;border-radius:0;background:none;padding:28px}
+.plan + .plan{border-top:1px solid var(--line)}
+.plan.pro{box-shadow:none;background:linear-gradient(180deg,rgba(151,125,245,.08),transparent 60%);position:relative}
+.plan.pro::before{content:"";position:absolute;inset:-1px -1px auto -1px;height:3px;background:var(--purple)}
+.plan h3{font:600 12px var(--mono);letter-spacing:1.4px}
+.plan li::before{border-radius:1px}
+
+/* How to get Pro: a timeline, not a box */
+.pay-steps{margin-top:56px;max-width:none;padding:0;border:0;border-radius:0;background:none}
+.pay-steps h3{font:600 12px var(--mono);letter-spacing:1.4px;text-transform:uppercase;color:var(--sub);margin:0 0 22px}
+.pay-steps ol{gap:0;position:relative}
+.pay-steps li{grid-template-columns:34px 1fr;column-gap:16px;padding-bottom:22px;position:relative}
+.pay-steps li::before{content:counter(p);width:34px;height:34px;border-radius:0;background:var(--bg);border:1px solid var(--purple);color:var(--purple);font:600 13px var(--mono);position:relative;z-index:1}
+.pay-steps li:not(:last-child)::after{content:"";position:absolute;left:17px;top:34px;bottom:0;width:1px;background:var(--line)}
+.pay-steps li strong{display:block;font:700 16px var(--display);margin:6px 0 4px}
+.pay-steps li span{display:block;max-width:40ch;line-height:1.5}
+.pay-foot{padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px}
+
+@media(min-width:760px){
+  .step{padding-right:32px}
+  .plan + .plan{border-top:0;border-left:1px solid var(--line)}
+}
+@media(min-width:960px){
+  .pay-steps ol{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:20px}
+  .pay-steps li{display:flex;flex-direction:column;padding-bottom:0}
+  .pay-steps li::before{margin-bottom:14px}
+  .pay-steps li:not(:last-child)::after{left:34px;right:-20px;top:17px;bottom:auto;width:auto;height:1px}
+  .pay-steps li strong{margin-top:0}
+}

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { OPEN_DOWNLOAD_EVENT, usePip } from './pip/PipContext.jsx';
 import { DOWNLOAD } from './content.js';
+import { track } from './track.js';
 
 // Asks GitHub for the newest release so the button always serves the latest
 // installer without editing the site. Falls back to the pinned URL if GitHub
@@ -82,6 +83,7 @@ export default function DownloadModal() {
 
   function startWindowsDownload() {
     setStatus('starting');
+    track('download', { meta: { version: file.version, platform } });
     react('excited', 1800);
     say('Good choice! Your download is starting.', 3500);
     // GitHub serves release assets as attachments, so navigating to the URL

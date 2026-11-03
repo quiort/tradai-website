@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePip } from './pip/PipContext.jsx';
+import { track } from './track.js';
 
 // Same checkout as the app (src/payment.js in tradAI2). Plans, wallets, OxaPay links and
 // contacts come from payment.json in the public releases repo, which the owner edits in the
@@ -81,6 +82,7 @@ export default function ProCheckout() {
     async function onOpen() {
       opener.current = document.activeElement;
       setOpen(true);
+      track('pro_open');
       setError('');
       try {
         const res = await fetch(`${PAYMENT_URL}?t=${Date.now()}`, { cache: 'no-store' });
@@ -123,7 +125,7 @@ export default function ProCheckout() {
     try { await navigator.clipboard.writeText(wallet.address); setCopied(true); setTimeout(() => setCopied(false), 1800); }
     catch { /* the address text is selectable as a fallback */ }
   }
-  function sent() { react('excited', 1800); say('Thanks! Your Pro key is on its way.', 4000); }
+  function sent() { track('pro_proof', { email: email.trim(), meta: { plan: plan?.id, provider } }); react('excited', 1800); say('Thanks! Your Pro key is on its way.', 4000); }
   const guard = (e) => { if (!ready) e.preventDefault(); else sent(); };
 
   return (

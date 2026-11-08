@@ -4,6 +4,7 @@ import SignalDemo from './SignalDemo.jsx';
 import { goToSection } from './sectionLinks.js';
 import DownloadModal from './DownloadModal.jsx';
 import ProCheckout from './ProCheckout.jsx';
+import EmailPopup from './EmailPopup.jsx';
 import { FEATURES, HERO, PIP_LINES, PLANS, PRO_STEPS, STEPS } from './content.js';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
       <Pip />
       <DownloadModal />
       <ProCheckout />
+      <EmailPopup />
     </PipProvider>
   );
 }

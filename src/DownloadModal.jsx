@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { OPEN_DOWNLOAD_EVENT, usePip } from './pip/PipContext.jsx';
-import { DOWNLOAD } from './content.js';
+import { DOWNLOAD, DOWNLOAD_EMAIL } from './content.js';
+import { isEmail, savedEmail, subscribe } from './emailList.js';
 import { track } from './track.js';
 
 // Asks GitHub for the newest release so the button always serves the latest
@@ -49,6 +50,8 @@ export default function DownloadModal() {
   const [status, setStatus] = useState('idle'); // idle | starting | started
   const [file, setFile] = useState({ url: DOWNLOAD.fallbackUrl, version: DOWNLOAD.fallbackVersion, sizeMb: DOWNLOAD.fallbackSizeMb });
   const [platform, setPlatform] = useState('windows');
+  const [email, setEmail] = useState(savedEmail);
+  const [emailError, setEmailError] = useState('');
   const dialogRef = useRef(null);
   const openerRef = useRef(null);
 
@@ -82,8 +85,11 @@ export default function DownloadModal() {
   }, [open, close]);
 
   function startWindowsDownload() {
+    // An email is required to download (the address joins the email list).
+    if (!isEmail(email)) { setEmailError(DOWNLOAD_EMAIL.error); dialogRef.current?.querySelector('#dl-email')?.focus(); return; }
+    subscribe(email, 'download');
     setStatus('starting');
-    track('download', { meta: { version: file.version, platform } });
+    track('download', { email: email.trim().toLowerCase(), meta: { version: file.version, platform } });
     react('excited', 1800);
     say('Good choice! Your download is starting.', 3500);
     // GitHub serves release assets as attachments, so navigating to the URL
@@ -104,6 +110,15 @@ export default function DownloadModal() {
         <h2 id="dl-title">Download TradAI</h2>
         <p className="dl-lead">Free plan included. No card needed.</p>
 
+        <label className="dl-email" htmlFor="dl-email">
+          <span>{DOWNLOAD_EMAIL.label}</span>
+          <input id="dl-email" type="email" inputMode="email" autoComplete="email" placeholder="you@email.com" value={email}
+            onChange={(e) => { setEmail(e.target.value); setEmailError(''); }}
+            onKeyDown={(e) => { if (e.key === 'Enter') startWindowsDownload(); }}
+            aria-invalid={Boolean(emailError)} aria-describedby="dl-email-hint" data-autofocus={!isEmail(email) || undefined} />
+          <small id="dl-email-hint" className={emailError ? 'is-error' : ''}>{emailError || DOWNLOAD_EMAIL.hint}</small>
+        </label>
+
         <ul className="dl-list">
           {PLATFORMS.map((p) => (
             <li key={p.id} className={`dl-item${p.available ? ' is-available' : ''}${platform === p.id ? ' is-yours' : ''}`}>
@@ -113,7 +128,7 @@ export default function DownloadModal() {
                 <small>{p.available ? `${p.note} · ${file.version}${sizeText}` : p.note}</small>
               </span>
               {p.available ? (
-                <button type="button" className="btn btn-primary btn-sm" data-autofocus onClick={startWindowsDownload} disabled={status === 'starting'}>
+                <button type="button" className="btn btn-primary btn-sm" data-autofocus={isEmail(email) || undefined} onClick={startWindowsDownload} disabled={status === 'starting'}>
                   {status === 'idle' ? 'Download' : status === 'starting' ? 'Starting…' : 'Download again'}
                 </button>
               ) : (

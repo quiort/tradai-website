@@ -32,6 +32,7 @@ export default function AdminPanel() {
   const [tab, setTab] = useState('overview');
   const [kind, setKind] = useState('all');
   const [days, setDays] = useState(30);
+  const [emails, setEmails] = useState([]);
 
   const signOut = useCallback(() => { saveSession(null); setSession(null); setEvents([]); }, []);
 
@@ -49,6 +50,19 @@ export default function AdminPanel() {
       if (!res.ok) throw new Error(`Database error ${res.status}`);
       const rows = await res.json();
       setEvents(rows);
+      // Email list: every address from the website (pop-up and download), all time.
+      const list = await fetch(`${SUPABASE_URL}/rest/v1/events?select=email,created_at,country,meta&source=eq.web&kind=eq.signup&email=not.is.null&order=created_at.asc&limit=20000`, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${s.token}` },
+      });
+      if (list.ok) {
+        const byEmail = new Map();
+        for (const row of await list.json()) {
+          const item = byEmail.get(row.email) || { email: row.email, first: row.created_at, country: row.country, lists: new Set() };
+          item.last = row.created_at; if (row.meta?.list) item.lists.add(row.meta.list); item.country = item.country || row.country;
+          byEmail.set(row.email, item);
+        }
+        setEmails([...byEmail.values()].sort((a, b) => new Date(b.first) - new Date(a.first)));
+      }
       setStatus(rows.length ? '' : 'No data yet for this period. This account only sees data if it is the owner email.');
     } catch (e) { setStatus(e.message); }
   }, [session, days, signOut]);
@@ -105,7 +119,7 @@ export default function AdminPanel() {
       </section>
 
       <nav className="adm-tabs">
-        {['overview', 'users', 'events'].map((t) => <button key={t} type="button" className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>{t[0].toUpperCase() + t.slice(1)}</button>)}
+        {['overview', 'users', 'emails', 'events'].map((t) => <button key={t} type="button" className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>{t[0].toUpperCase() + t.slice(1)}</button>)}
       </nav>
       {status && <p className="adm-status">{status}</p>}
 
@@ -120,8 +134,9 @@ export default function AdminPanel() {
           <div className="adm-box">
             <h3>Funnel · period</h3>
             {['visit', 'download', 'install', 'signup', 'pro_open', 'pro_proof', 'pro_active'].map((k) => (
-              <div className="adm-row" key={k}><span>{KIND_LABEL[k]}</span><b>{events.filter((e) => e.kind === k).length}</b></div>
+              <div className="adm-row" key={k}><span>{KIND_LABEL[k]}</span><b>{events.filter((e) => e.kind === k && (k !== 'signup' || e.source === 'app')).length}</b></div>
             ))}
+            <div className="adm-row"><span>Email list (all time)</span><b>{emails.length}</b></div>
           </div>
         </section>
       )}
@@ -133,6 +148,25 @@ export default function AdminPanel() {
             <tr key={u.email}><td>{u.email}</td><td>{flag(u.country)} {u.country || '—'}</td><td className="mono">{u.ip || '—'}</td><td>{u.version || '—'}</td><td>{u.opens}</td><td>{fmt(u.first)}</td><td>{fmt(u.last)}</td><td>{u.pro ? 'Pro' : 'Free'}</td></tr>
           ))}</tbody>
         </table>{!stats.users.length && <p className="adm-muted">No app users yet. They appear once people use the updated app.</p>}</div>
+      )}
+
+      {tab === 'emails' && (
+        <>
+          <div className="adm-filter">
+            <span>{emails.length} email{emails.length === 1 ? '' : 's'}</span>
+            <button type="button" onClick={() => navigator.clipboard?.writeText(emails.map((e) => e.email).join('\n'))}>Copy all</button>
+            <button type="button" onClick={() => {
+              const csv = ['email,first_seen,country,source', ...emails.map((e) => `${e.email},${e.first},${e.country || ''},${[...e.lists].join('+')}`)].join('\n');
+              const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `tradai-emails-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(a.href);
+            }}>Download CSV</button>
+          </div>
+          <div className="adm-table"><table>
+            <thead><tr><th>Email</th><th>Joined</th><th>From</th><th>Country</th></tr></thead>
+            <tbody>{emails.map((e) => (
+              <tr key={e.email}><td>{e.email}</td><td>{fmt(e.first)}</td><td>{[...e.lists].map((l) => (l === 'download' ? 'Download' : 'Pop-up')).join(' + ') || '—'}</td><td>{flag(e.country)} {e.country || '—'}</td></tr>
+            ))}</tbody>
+          </table>{!emails.length && <p className="adm-muted">No emails yet. They appear as visitors join from the pop-up or the download window.</p>}</div>
+        </>
       )}
 
       {tab === 'events' && (

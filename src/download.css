@@ -46,3 +46,21 @@
 .pro-send .btn{flex:1 1 160px;justify-content:center}
 .btn.is-disabled{opacity:.45;cursor:not-allowed}
 .pro-oxapay{display:flex;justify-content:center;margin-top:10px;background:#2bd49a;color:#08120e}.pro-oxapay:hover{background:#4ee0ae}
+
+/* Email step in the download window */
+.dl-email{display:grid;gap:6px;margin:0 0 14px}
+.dl-email span{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--sub)}
+.dl-email input,.email-form input{width:100%;height:42px;padding:0 12px;border:1px solid var(--line);border-radius:3px;background:var(--bg);color:var(--text);font:inherit;font-size:15px;outline:none}
+.dl-email input:focus,.email-form input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(151,125,245,.2)}
+.dl-email input[aria-invalid="true"],.email-form input[aria-invalid="true"]{border-color:var(--red,#f47783)}
+.dl-email small{font-size:12px;color:var(--muted);line-height:1.4}
+.dl-email small.is-error,.email-error{color:var(--red,#f47783)}
+/* Welcome pop-up */
+.email-dialog{text-align:center;width:min(420px,100%)}
+.email-pip{display:block;margin:0 auto 10px;width:64px;height:64px;object-fit:contain}
+.email-form{display:flex;gap:8px;margin-top:4px}
+.email-form .btn{flex:0 0 auto;border:0;cursor:pointer;font-family:inherit;white-space:nowrap}
+.email-error{margin:8px 0 0;font-size:13px}
+.email-skip{margin-top:12px;border:0;background:none;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline}
+.email-skip:hover{color:var(--text)}
+@media (max-width:420px){.email-form{flex-direction:column}.email-form .btn{height:42px}}

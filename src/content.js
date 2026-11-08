@@ -11,6 +11,23 @@ export const DOWNLOAD = {
   fallbackSizeMb: 94,
 };
 
+// Email list: optional pop-up a few seconds after someone arrives, and the email
+// step before downloading the app.
+export const EMAIL_POPUP = {
+  delayMs: 6000,
+  title: 'Get the channels that actually win',
+  text: "Once a week, Pip sends you the signal channels that made money in TradAI's tests, and the ones to avoid. Free, one email a week.",
+  button: 'Send it to me',
+  doneTitle: "You're on the list",
+  doneText: 'First report lands in your inbox this week.',
+  pipThanks: "You're on the list!",
+};
+export const DOWNLOAD_EMAIL = {
+  label: 'Your email',
+  hint: 'Enter your email to download. We send app updates and the weekly channel report.',
+  error: 'Enter a valid email address to download.',
+};
+
 export const HERO = {
   eyebrow: 'For crypto signal buyers',
   lead: "TradAI reads Telegram signal channels, paper-trades every call automatically, and shows you the real P&L. Keep the channels that work. Drop the ones that don't.",

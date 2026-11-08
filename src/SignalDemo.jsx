@@ -74,8 +74,13 @@ function Sparkline({ points, up }) {
 // a take-profit, replayed. The pinned SIGNAL_DEMO is the fallback if nothing loads.
 const LEADERBOARD_URL = 'https://raw.githubusercontent.com/quiort/tradAII-release/main/leaderboard.json';
 const monthLabel = (t) => new Date(t).toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+// Some signals give a single entry price (no zone): use the measured fill for both ends.
+function entryZoneOf(sample) {
+  const zone = (sample.entryZone || []).map((v) => (v == null ? NaN : Number(v)));
+  return zone.length === 2 && zone.every((v) => Number.isFinite(v) && v > 0) ? zone : [Number(sample.fill), Number(sample.fill)];
+}
 function toCard(sample, live) {
-  const zone = sample.entryZone?.length === 2 ? sample.entryZone.map(Number) : [Number(sample.fill), Number(sample.fill)];
+  const zone = entryZoneOf(sample);
   return {
     id: `${sample.symbol}-${sample.time}`, signalId: String(sample.time).slice(-4), symbol: sample.symbol, side: 'LONG',
     dateLabel: monthLabel(sample.time), entryZone: zone, stop: Number(sample.stop), targets: sample.targets.map(Number),
@@ -85,15 +90,15 @@ function toCard(sample, live) {
 async function pickWinningSample() {
   const res = await fetch(LEADERBOARD_URL, { cache: 'no-store' });
   if (!res.ok) throw new Error('No leaderboard');
-  const samples = ((await res.json()).samples || []).filter((x) => x.side === 'LONG' && x.targets?.length && Number(x.stop) > 0);
+  const samples = ((await res.json()).samples || []).filter((x) => x.side === 'LONG' && x.targets?.length && Number(x.stop) > 0 && entryZoneOf(x).every((v) => Number.isFinite(v) && v > 0));
   if (!samples.length) throw new Error('No samples');
   const open = samples.filter((x) => x.open).slice(0, 12);
   if (open.length) {
     try {
-      const symbols = [...new Set(open.map((x) => x.symbol))];
-      const prices = await fetchBinance(`/api/v3/ticker/price?symbols=${encodeURIComponent(JSON.stringify(symbols))}`);
+      // All spot prices in one call: a batch request fails whole if one symbol isn't listed.
+      const prices = await fetchBinance('/api/v3/ticker/price');
       const bySymbol = Object.fromEntries((prices || []).map((p) => [p.symbol, Number(p.price)]));
-      const winner = open.find((x) => { const price = bySymbol[x.symbol]; const entry = Math.min(...(x.entryZone || [x.fill])); return price > entry * 1.002 && price > x.stop && price < x.targets[x.targets.length - 1]; });
+      const winner = open.find((x) => { const price = bySymbol[x.symbol]; const entry = Math.min(...entryZoneOf(x)); return price > entry * 1.002 && price > x.stop && price < x.targets[x.targets.length - 1]; });
       if (winner) return toCard(winner, true);
     } catch { /* fall through to a closed winner */ }
   }

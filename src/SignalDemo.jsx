@@ -68,8 +68,47 @@ function Sparkline({ points, up }) {
   );
 }
 
+// The sample shown is always a winning trade. Every night the leaderboard publishes recent
+// real trades from channels whose measured results are profitable. The card shows one that
+// is in profit at the live Binance price right now; if none is, the newest one that reached
+// a take-profit, replayed. The pinned SIGNAL_DEMO is the fallback if nothing loads.
+const LEADERBOARD_URL = 'https://raw.githubusercontent.com/quiort/tradAII-release/main/leaderboard.json';
+const monthLabel = (t) => new Date(t).toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+function toCard(sample, live) {
+  const zone = sample.entryZone?.length === 2 ? sample.entryZone.map(Number) : [Number(sample.fill), Number(sample.fill)];
+  return {
+    id: `${sample.symbol}-${sample.time}`, signalId: String(sample.time).slice(-4), symbol: sample.symbol, side: 'LONG',
+    dateLabel: monthLabel(sample.time), entryZone: zone, stop: Number(sample.stop), targets: sample.targets.map(Number),
+    leverage: null, reportedHits: Math.max(0, Number(sample.targetsHit) || 0), size: SIGNAL_DEMO.size, live, measured: true,
+  };
+}
+async function pickWinningSample() {
+  const res = await fetch(LEADERBOARD_URL, { cache: 'no-store' });
+  if (!res.ok) throw new Error('No leaderboard');
+  const samples = ((await res.json()).samples || []).filter((x) => x.side === 'LONG' && x.targets?.length && Number(x.stop) > 0);
+  if (!samples.length) throw new Error('No samples');
+  const open = samples.filter((x) => x.open).slice(0, 12);
+  if (open.length) {
+    try {
+      const symbols = [...new Set(open.map((x) => x.symbol))];
+      const prices = await fetchBinance(`/api/v3/ticker/price?symbols=${encodeURIComponent(JSON.stringify(symbols))}`);
+      const bySymbol = Object.fromEntries((prices || []).map((p) => [p.symbol, Number(p.price)]));
+      const winner = open.find((x) => { const price = bySymbol[x.symbol]; const entry = Math.min(...(x.entryZone || [x.fill])); return price > entry * 1.002 && price > x.stop && price < x.targets[x.targets.length - 1]; });
+      if (winner) return toCard(winner, true);
+    } catch { /* fall through to a closed winner */ }
+  }
+  const closed = samples.find((x) => !x.open && Number(x.netPct) > 0 && Number(x.targetsHit) >= 1);
+  if (closed) return toCard(closed, false);
+  throw new Error('No winning sample');
+}
+
 export default function SignalDemo() {
-  const s = SIGNAL_DEMO;
+  const [sample, setSample] = useState(null);
+  useEffect(() => { let off = false; pickWinningSample().then((card) => { if (!off) setSample(card); }).catch(() => {}); return () => { off = true; }; }, []);
+  return <SignalCard key={sample?.id || 'pinned'} s={sample || SIGNAL_DEMO} />;
+}
+
+function SignalCard({ s }) {
   const { react, say } = usePip();
   const entry = Math.min(...s.entryZone);            // app basis: lowest price in the entry zone
   const finalTarget = s.targets[s.targets.length - 1];
@@ -101,7 +140,7 @@ export default function SignalDemo() {
     return () => io.disconnect();
   }, []);
 
-  // Live mode: real XRP price every 5 s. Falls back to replay if it can't load
+  // Live mode: real price every 5 s. Falls back to replay if it can't load
   // or if price is outside the stop–final-target range (position would be closed).
   useEffect(() => {
     let cancelled = false;
@@ -118,7 +157,7 @@ export default function SignalDemo() {
         const price = Number(data.price);
         if (cancelled) return;
         // Live price is shown only while the trade is in profit; otherwise the card replays the real, winning run.
-        if (!Number.isFinite(price) || price <= Math.min(...s.entryZone) * 1.002 || price >= finalTarget) throw new Error('out of range');
+        if (s.live === false || !Number.isFinite(price) || price <= Math.min(...s.entryZone) * 1.002 || price >= finalTarget) throw new Error('out of range');
         if (first) { setMode('live'); loadHistory(); }
         setMark(price);
         setHistory((h) => [...h, price].slice(-SPARK_POINTS));
@@ -167,7 +206,7 @@ export default function SignalDemo() {
     announced.current.add(shownHits);
     if (!visible.current) return;
     react('excited', 1400);
-    say(`TP${shownHits} hit on XRP! ${shownHits === 1 ? 'Paper profit is rolling.' : 'Still climbing.'}`, 3000);
+    say(`TP${shownHits} hit on ${s.symbol.replace(/USDT$|USDC$/, '')}! ${shownHits === 1 ? 'Paper profit is rolling.' : 'Still climbing.'}`, 3000);
   }, [shownHits, react, say]);
 
   const pnl = quantity * (mark - entry);
@@ -206,7 +245,7 @@ export default function SignalDemo() {
 
           <div className="signal-tags">
             <span className="signal-tag">SIGNAL #{s.signalId}</span>
-            <span className="signal-tag">SIGNAL LEVERAGE · {s.leverage.min}–{s.leverage.max}×</span>
+            {s.leverage && <span className="signal-tag">SIGNAL LEVERAGE · {s.leverage.min}–{s.leverage.max}×</span>}
           </div>
 
           <div className="signal-levels">
@@ -257,7 +296,7 @@ export default function SignalDemo() {
       </div>
 
       <p className="demo-note">
-        Real signal #{s.signalId} from a public Telegram channel. The channel reported TP1–TP{s.reportedHits} hit.
+        Real signal #{s.signalId} from a public Telegram channel{s.measured ? ' with profitable measured results' : ''}. {s.measured ? (mode === 'live' ? 'This trade is open and in profit now.' : `TradAI's replay measured TP1–TP${s.reportedHits} hit.`) : `The channel reported TP1–TP${s.reportedHits} hit.`}
         {mode === 'live' ? ' Price is live from Binance.' : ' Replay steps through the reported levels.'} Not every signal wins, which is why TradAI tracks them all.
       </p>
     </div>

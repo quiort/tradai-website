@@ -44,7 +44,9 @@ function buildReplayPath(entry, targets, hits) {
   }
   const last = stops[stops.length - 1];
   for (let i = 0; i < 10; i += 1) path.push(last * (1.002 + Math.sin(i * 0.9) * 0.004));
-  return path;
+  // The sample is a winning trade: the price shown never drops to or below the entry.
+  const floor = entry * 1.004;
+  return path.map((price) => Math.max(price, floor));
 }
 
 function Sparkline({ points, up }) {
@@ -115,18 +117,19 @@ export default function SignalDemo() {
         const data = await fetchBinance(`/api/v3/ticker/price?symbol=${s.symbol}`);
         const price = Number(data.price);
         if (cancelled) return;
-        if (!Number.isFinite(price) || price <= s.stop || price >= finalTarget) throw new Error('out of range');
+        // Live price is shown only while the trade is in profit; otherwise the card replays the real, winning run.
+        if (!Number.isFinite(price) || price <= Math.min(...s.entryZone) * 1.002 || price >= finalTarget) throw new Error('out of range');
         if (first) { setMode('live'); loadHistory(); }
         setMark(price);
         setHistory((h) => [...h, price].slice(-SPARK_POINTS));
         timer = setTimeout(() => tick(false), LIVE_REFRESH_MS);
       } catch {
-        if (!cancelled) setMode('replay');
+        if (!cancelled) { setMode('replay'); replayIndex.current = replayStart; setMark(startPrice); setHistory(replayPath.slice(0, replayStart + 1).slice(-SPARK_POINTS)); }
       }
     }
     tick(true);
     return () => { cancelled = true; clearTimeout(timer); };
-  }, [s.symbol, s.stop, finalTarget]);
+  }, [s.symbol, s.stop, finalTarget, replayPath, replayStart, startPrice]);
 
   // Replay mode: step along the replay path.
   useEffect(() => {

@@ -1,14 +1,14 @@
 // All page copy lives here so text can change without touching components.
 
-export const DOWNLOAD_URL = 'https://github.com/quiort/tradAII-release/releases/latest';
+export const DOWNLOAD_URL = 'https://github.com/quiort/tradAI3/releases/latest';
 
 // Windows installer. The site asks GitHub for the newest release on click;
 // these pinned values are the fallback if that lookup fails.
 export const DOWNLOAD = {
-  releaseApi: 'https://api.github.com/repos/quiort/tradAII-release/releases/latest',
-  fallbackUrl: 'https://github.com/quiort/tradAII-release/releases/download/v1.19.16/TradAI-Setup-1.19.16.exe',
-  fallbackVersion: 'v1.19.16',
-  fallbackSizeMb: 94,
+  releaseApi: 'https://api.github.com/repos/quiort/tradAI3/releases/latest',
+  fallbackUrl: 'https://github.com/quiort/tradAI3/releases/download/v3.0.5/TradAI3-Setup-3.0.5.exe',
+  fallbackVersion: 'v3.0.5',
+  fallbackSizeMb: 96,
 };
 
 // Email list: optional pop-up a few seconds after someone arrives, and the email
